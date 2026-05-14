@@ -1,0 +1,35 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [],
+  "dev_command": "pnpm run dev",
+  "env_vars": {},
+  "experiments": null,
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663660398713/CQJrP6MK7TmqPUYrohndKR",
+    "access_key_id": "ASIAZV3A2ECZHTCWAH7I",
+    "secret_access_key": "VE459XUxC+8hZOQMDgnZfDoqMriz2kWnwoqA1NrM",
+    "session_token": "IQoJb3JpZ2luX2VjEJf//////////wEaCXVzLWVhc3QtMSJHMEUCIQCF1Wfly0DrVGKCYqda2z/BLSIhEmrBNZ5APYsmqx6cfgIgaEETYxK/Gc29pXFZrwNssaDYVO25SPSdGsAavPHtP/Eq9gMIYBAEGgw2NjUzODYwOTg4NjYiDAcA3hpKVzXCEc0VfyrTA9BHa981IjQagUeB/DE4L8ZHl4rErZRYr+a9/HeHd006QxDAGjXNTW+vB1F1nEQlPndxxr+pdiwUiVeAHA/vqdmnDPJ6nyLo6fnRV2QjkkfGETLtS5jPVyLuv6qkswGg4N6DcTYv8q3hCIKe0bNhjxR5MyhijR9pDPrhdDhVbAJn0fQl4qnuRZoqN3BMwIOz903cFU/S/zoIcXf1w6WPaH2vmTQdb3AVVNhfdKHRuYkJIldrvolYe6MBIi7N04ZHVahWm/XEGYB2bihcGj0z9TDlNw+ixRTQSDma2NdTcKwNseDCZxwHy/il2uifxwgdhdN8AGsGlzWn6r/Ca5gvqhaTFhlCCPO7e0muDsjvsVd/1bP1To8D8z7foYQlHD4IlTVHGxXqj+q0caH/iZ3ES36oaQ2HO4AAIBBh3yUsYQ/Gr9yflI31r8GmsTX7lnvpEGlV3dIF3C2kI0YeSqxITaeZjSZ0T6L5ntA25EQCMUuPvz6YSv55Ayd4bI8ioghM2cmjY3343lV9yNcvgFYDcW0QDsBdULzBDux6QbN2zNU0ceTiPvR9EeglOksxf8VKFVPpjsRsrGkEFj9b4BBMudcclYYN0d+bJE5jkK6dd1+GxrGuMK/Gl9AGOp0BqkiV5fZfVjvA4glkOH3xwagg4HTAcr06dHDa2juNcLknsnarjgKvT0fC9+B1IMwFEsQd+mt6amwnnfA0lpKsbKObK0Td98vCm1QUUJX7EG3TisMBNFLo6rPD80nY3m7olblK8gDXPlRPtG40WMtJJNwKNS6j6SO1Wt8OCtdl6UOnYRIiZLlQEFXwVJZsRThb2wGS3YID/uWs+9mfXQ==",
+    "expiration": "2026-05-15T02:58:55.000Z"
+  },
+  "name": "jit-portfolio",
+  "path": "/home/ubuntu/jit-portfolio",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "eto9CrUjVosrmUFEkzwVHt",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "NewuBBSJmqUBrtsWjfa8NN",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "eDoc Hub",
+    "OWNER_OPEN_ID": "LLoqxkUeXDdQ8HvpPZkjyx",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "f9f02c07-b73a-4adc-8e08-8e9ba6e27fc0",
+    "VITE_APP_ID": "CQJrP6MK7TmqPUYrohndKR",
+    "VITE_APP_LOGO": "",
+    "VITE_APP_TITLE": "Jit Maiti - Full-Stack Developer Portfolio",
+    "VITE_FRONTEND_FORGE_API_KEY": "dMtyoFEoDg9ZNXDmfJeXDM",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-static",
+  "test_command": "pnpm test"
+}
