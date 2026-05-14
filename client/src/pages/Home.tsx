@@ -1,25 +1,47 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+import { Suspense } from 'react';
+import { Navigation } from '@/components/Navigation';
+import { Hero } from '@/components/Hero';
+import { About } from '@/components/About';
+import { Skills } from '@/components/Skills';
+import { Projects } from '@/components/Projects';
+import { Contact } from '@/components/Contact';
 
 /**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
+ * Design System: Liquid Glass Futurism
+ * Home Page - Complete portfolio with all sections
+ * - Hero with 3D canvas and typing effect
+ * - About, Skills, Projects, and Contact sections
+ * - Smooth scrolling and staggered animations
  */
-export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
 
+export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
+    <div className="min-h-screen bg-white">
+      <Navigation />
+      <Suspense fallback={<div className="w-full h-screen flex items-center justify-center">Loading...</div>}>
+        <Hero />
+      </Suspense>
+      <section id="about">
+        <About />
+      </section>
+      <section id="skills">
+        <Skills />
+      </section>
+      <section id="projects">
+        <Projects />
+      </section>
+      <section id="contact">
+        <Contact />
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white py-8">
+        <div className="container max-w-6xl mx-auto px-4 text-center">
+          <p className="text-slate-400">
+            © 2024 Jit Maiti. All rights reserved. Built with React, Three.js, and Framer Motion.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
