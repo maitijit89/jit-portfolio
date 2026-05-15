@@ -37,6 +37,20 @@ export function Projects() {
       link: '#',
       featured: true,
     },
+    {
+      title: 'Sdev Ai LLM',
+      description: 'An advanced AI-powered platform leveraging Large Language Models to assist developers in code generation, debugging, and architectural planning.',
+      technologies: ['Python', 'LLM', 'React', 'FastAPI'],
+      link: '#',
+      featured: true,
+    },
+    {
+      title: 'JM Android Custom OS',
+      description: 'A highly optimized, privacy-focused custom Android operating system with enhanced performance kernels and a bespoke user interface.',
+      technologies: ['Android NDK', 'C++', 'Java', 'Shell Scripting'],
+      link: '#',
+      featured: true,
+    },
   ];
 
   const sectionVariants = {
