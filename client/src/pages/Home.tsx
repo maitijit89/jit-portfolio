@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { motion } from 'framer-motion';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { About } from '@/components/About';
@@ -9,14 +10,13 @@ import { Contact } from '@/components/Contact';
 /**
  * Design System: Liquid Glass Futurism
  * Home Page - Complete portfolio with all sections
- * - Hero with 3D canvas and typing effect
- * - About, Skills, Projects, and Contact sections
- * - Smooth scrolling and staggered animations
+ * - Smooth CSS scroll-behavior
+ * - Animated footer entrance
  */
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white scroll-smooth">
       <Navigation />
       <Suspense fallback={<div className="w-full h-screen flex items-center justify-center">Loading...</div>}>
         <Hero />
@@ -35,13 +35,19 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-8">
+      <motion.footer
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="bg-slate-900 text-white py-8"
+      >
         <div className="container max-w-6xl mx-auto px-4 text-center">
-          <p className="text-slate-400">
-            © 2024 Jit Maiti. All rights reserved. Built with React, Three.js, and Framer Motion.
+          <p className="text-slate-400 text-sm sm:text-base">
+            © {new Date().getFullYear()} Jit Maiti. All rights reserved.
           </p>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 }

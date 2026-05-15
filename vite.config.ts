@@ -5,6 +5,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
@@ -146,6 +150,53 @@ function vitePluginManusDebugCollector(): Plugin {
           }
         });
       });
+
+      // Contact form endpoint for development
+      server.middlewares.use("/api/contact", async (req, res, next) => {
+        if (req.method !== "POST") {
+          return next();
+        }
+
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk.toString();
+        });
+
+        req.on("end", async () => {
+          try {
+            const { name, email, message } = JSON.parse(body);
+
+            if (!name || !email || !message) {
+              res.writeHead(400, { "Content-Type": "application/json" });
+              res.end(JSON.stringify({ success: false, message: "Missing fields" }));
+              return;
+            }
+
+            const transporter = nodemailer.createTransport({
+              service: "gmail",
+              auth: {
+                user: process.env.GMAIL_USER || "maitidebjit2@gmail.com",
+                pass: process.env.GMAIL_APP_PASSWORD,
+              },
+            });
+
+            const mailOptions = {
+              from: email,
+              to: "maitidebjit2@gmail.com",
+              subject: `New Portfolio Message from ${name}`,
+              text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+            };
+
+            await transporter.sendMail(mailOptions);
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: true, message: "Email sent successfully" }));
+          } catch (error) {
+            console.error("Error sending email in dev server:", error);
+            res.writeHead(500, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: false, message: "Failed to send email" }));
+          }
+        });
+      });
     },
   };
 }
@@ -203,7 +254,7 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const plugins = [react(), tailwindcss(), /* jsxLocPlugin(), */ vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
 
 export default defineConfig({
   plugins,
@@ -213,6 +264,7 @@ export default defineConfig({
       "@shared": path.resolve(import.meta.dirname, "shared"),
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
     },
+    dedupe: ["react", "react-dom"],
   },
   envDir: path.resolve(import.meta.dirname),
   root: path.resolve(import.meta.dirname, "client"),
