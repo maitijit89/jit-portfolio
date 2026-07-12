@@ -16,17 +16,26 @@ interface ThemeProviderProps {
   switchable?: boolean;
 }
 
+const getSystemTheme = (): Theme => {
+  if (typeof window !== "undefined" && window.matchMedia) {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return "dark"; // Default fallback
+};
+
 export function ThemeProvider({
   children,
-  defaultTheme = "light",
+  defaultTheme,
   switchable = false,
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (switchable) {
       const stored = localStorage.getItem("theme");
-      return (stored as Theme) || defaultTheme;
+      if (stored === "light" || stored === "dark") {
+        return stored;
+      }
     }
-    return defaultTheme;
+    return defaultTheme || getSystemTheme();
   });
 
   useEffect(() => {
@@ -41,6 +50,28 @@ export function ThemeProvider({
       localStorage.setItem("theme", theme);
     }
   }, [theme, switchable]);
+
+  // Listen to system preference changes dynamically
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      // Only apply system changes if the user hasn't explicitly set a preference in localStorage
+      const stored = localStorage.getItem("theme");
+      if (!stored) {
+        setTheme(e.matches ? "dark" : "light");
+      }
+    };
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    } else {
+      mediaQuery.addListener(handleChange);
+      return () => mediaQuery.removeListener(handleChange);
+    }
+  }, []);
 
   const toggleTheme = switchable
     ? () => {
