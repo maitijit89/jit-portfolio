@@ -19,6 +19,11 @@ export function TypingEffect({ text, speed = 50, className = '' }: TypingEffectP
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
+    setDisplayedText('');
+    setIsComplete(false);
+  }, [text]);
+
+  useEffect(() => {
     if (displayedText.length < text.length) {
       const timer = setTimeout(() => {
         setDisplayedText(text.slice(0, displayedText.length + 1));

@@ -1,4 +1,3 @@
-import { jsxLocPlugin } from "@builder.io/vite-plugin-jsx-loc";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
@@ -176,7 +175,7 @@ function vitePluginManusDebugCollector(): Plugin {
               service: "gmail",
               auth: {
                 user: process.env.GMAIL_USER || "maitidebjit2@gmail.com",
-                pass: process.env.GMAIL_APP_PASSWORD,
+                pass: (process.env.GMAIL_APP_PASSWORD || "").replace(/\s+/g, ""),
               },
             });
 
@@ -254,7 +253,7 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), /* jsxLocPlugin(), */ vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const plugins = [react(), tailwindcss(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
 
 export default defineConfig({
   plugins,
@@ -271,6 +270,16 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    chunkSizeWarningLimit: 1200,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor_three: ["three", "@react-three/fiber"],
+          vendor_motion: ["framer-motion"],
+          vendor_icons: ["lucide-react"],
+        },
+      },
+    },
   },
   server: {
     port: 3000,

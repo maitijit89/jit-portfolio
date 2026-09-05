@@ -19,15 +19,12 @@ function Router() {
 }
 
 // NOTE: About Theme
-// - Dark mode is the default for the Liquid Glass Futurism design
-// - Theme is switchable via the toggle in the navigation bar
+// - Clean iOS Liquid Glass Light theme
 
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        switchable
-      >
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
           <Router />

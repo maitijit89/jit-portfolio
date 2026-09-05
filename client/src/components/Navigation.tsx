@@ -1,28 +1,43 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { Menu, X, Sparkles } from 'lucide-react';
+import { useIsMobile } from '@/hooks/useMobile';
 
 /**
- * Design System: Liquid Glass Futurism
- * Navigation — Dark glassmorphic sticky header
- * - Theme toggle (sun/moon) with smooth rotation
- * - Active section tracking with animated underline
- * - Mobile: dark glass overlay with staggered slide-in
- * - Scroll-aware opacity/blur shift
+ * Design System: iOS Liquid Glass
+ * Navigation — Frosted glass sticky header with liquid pill styling
+ * - Active section tracking with animated pill background
+ * - Mobile: iOS frosted glass overlay with staggered slide-in
+ * - Hide-on-scroll-down / show-on-scroll-up
+ * - Pure native anchor links for 100% accurate, smooth scrolling
  */
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
-  const { theme, toggleTheme, switchable } = useTheme();
+  const [navVisible, setNavVisible] = useState(true);
+  const prevScrollY = useRef(0);
+  const isMobile = useIsMobile();
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  // Scroll direction tracking
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const isScrolled = latest > 20;
+    if (isScrolled !== scrolled) {
+      setScrolled(isScrolled);
+    }
+
+    if (!isOpen) {
+      const diff = latest - prevScrollY.current;
+      if (diff > 12 && latest > 120) {
+        setNavVisible(false);
+      } else if (diff < -8) {
+        setNavVisible(true);
+      }
+    }
+    prevScrollY.current = latest;
+  });
 
   // Track active section via IntersectionObserver
   useEffect(() => {
@@ -35,16 +50,15 @@ export function Navigation() {
           }
         });
       },
-      { rootMargin: '-40% 0px -55% 0px' }
+      { rootMargin: '-25% 0px -60% 0px' }
     );
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
 
-  // Lock body scroll when mobile menu is open
+  // Show nav whenever mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    if (isOpen) setNavVisible(true);
   }, [isOpen]);
 
   const navItems = [
@@ -54,12 +68,9 @@ export function Navigation() {
     { label: 'Contact', href: '#contact' },
   ];
 
-  const handleNavClick = (href: string) => {
+  const handleMobileClick = () => {
     setIsOpen(false);
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    setNavVisible(true);
   };
 
   const menuVariants = {
@@ -67,8 +78,8 @@ export function Navigation() {
       opacity: 0,
       height: 0,
       transition: {
-        duration: 0.3,
-        ease: [0.4, 0, 0.2, 1],
+        duration: 0.2,
+        ease: 'easeInOut' as any,
         when: 'afterChildren',
       },
     },
@@ -76,133 +87,109 @@ export function Navigation() {
       opacity: 1,
       height: 'auto',
       transition: {
-        duration: 0.3,
-        ease: [0.4, 0, 0.2, 1],
+        duration: 0.2,
+        ease: 'easeInOut' as any,
         when: 'beforeChildren',
-        staggerChildren: 0.06,
+        staggerChildren: 0.04,
       },
     },
   };
 
   const menuItemVariants = {
-    closed: { opacity: 0, x: -16 },
+    closed: { opacity: 0, x: -10 },
     open: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.15, ease: 'easeOut' as any },
     },
   };
 
   return (
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      animate={{
+        y: navVisible ? 0 : -100,
+        opacity: navVisible ? 1 : 0,
+      }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-slate-950/80 backdrop-blur-2xl border-b border-white/[0.06] shadow-lg shadow-black/20'
-          : 'bg-transparent backdrop-blur-sm border-b border-transparent'
+          ? 'bg-white/85 backdrop-blur-xl border-b border-black/6 shadow-xs'
+          : 'bg-transparent backdrop-blur-xs border-b border-transparent'
       }`}
     >
-      <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="container max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
         {/* Logo */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="text-2xl font-bold text-gradient cursor-pointer select-none"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        <a
+          href="#"
+          className="text-2xl font-bold text-gradient cursor-pointer select-none tracking-tight"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+            setNavVisible(true);
+          }}
         >
           JM
-        </motion.div>
+        </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-1">
-          {navItems.map((item, i) => {
-            const isActive = activeSection === item.href.replace('#', '');
-            return (
-              <motion.button
-                key={item.label}
-                onClick={() => handleNavClick(item.href)}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.08, duration: 0.4, ease: 'easeOut' }}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${
-                  isActive
-                    ? 'text-white'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {item.label}
-                {/* Active indicator */}
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-active"
-                    className="absolute inset-0 bg-white/[0.08] rounded-lg -z-10"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                  />
-                )}
-              </motion.button>
-            );
-          })}
-
-          {/* Theme Toggle */}
-          {switchable && (
-            <motion.button
-              onClick={toggleTheme}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="ml-4 p-2 rounded-lg bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] hover:border-white/[0.15] transition-all duration-300"
-              aria-label="Toggle theme"
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {theme === 'dark' ? (
-                  <motion.div
-                    key="sun"
-                    initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                    exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <Sun className="w-4 h-4 text-amber-400" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="moon"
-                    initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                    exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <Moon className="w-4 h-4 text-indigo-400" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
-          )}
+        <div className="hidden md:flex items-center gap-3">
+          <div className="flex items-center gap-1.5 bg-slate-900/3 p-1.5 rounded-2xl border border-black/4 shadow-[inset_0_1px_1px_rgba(0,0,0,0.02)]">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.replace('#', '');
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className={`relative px-4 py-2 text-sm font-medium rounded-xl transition-colors duration-200 ${
+                    isActive
+                      ? 'text-indigo-600 font-semibold'
+                      : 'text-slate-600 hover:text-slate-950'
+                  }`}
+                >
+                  {item.label}
+                  {/* Active indicator */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-active"
+                      className="absolute inset-0 bg-white rounded-xl -z-10 shadow-xs border border-black/4"
+                      transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                    />
+                  )}
+                  {/* Gradient underline for active */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-underline"
+                      className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full"
+                      style={{
+                        background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4)',
+                      }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                </a>
+              );
+            })}
+          </div>
+          
+          {/* Hire Me CTA */}
+          <a
+            href="#contact"
+            className="relative overflow-hidden flex items-center gap-1.5 px-5 py-2 bg-linear-to-r from-indigo-500 via-purple-500 to-indigo-500 bg-size-[200%_100%] hover:bg-right text-white text-sm font-semibold rounded-xl shadow-md shadow-indigo-500/20 active:scale-95 transition-all duration-300"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Hire Me
+          </a>
         </div>
 
-        {/* Mobile: Theme Toggle + Menu Button */}
+        {/* Mobile: Menu Button */}
         <div className="flex md:hidden items-center gap-2">
-          {switchable && (
-            <motion.button
-              onClick={toggleTheme}
-              whileTap={{ scale: 0.9 }}
-              className="p-2 rounded-lg bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] transition-all"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-amber-400" />
-              ) : (
-                <Moon className="w-5 h-5 text-indigo-400" />
-              )}
-            </motion.button>
-          )}
-
-          <motion.button
-            className="p-2 rounded-lg bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] transition-colors"
+          <button
+            className="p-2.5 rounded-xl bg-white border border-black/8 text-slate-700 shadow-xs active:scale-92 transition-transform cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
-            whileTap={{ scale: 0.9 }}
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
+            aria-controls="mobile-nav-menu"
           >
             <AnimatePresence mode="wait" initial={false}>
               {isOpen ? (
@@ -211,9 +198,9 @@ export function Navigation() {
                   initial={{ rotate: -90, opacity: 0 }}
                   animate={{ rotate: 0, opacity: 1 }}
                   exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.12 }}
                 >
-                  <X className="w-5 h-5 text-slate-300" />
+                  <X className="w-5 h-5" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -221,45 +208,58 @@ export function Navigation() {
                   initial={{ rotate: 90, opacity: 0 }}
                   animate={{ rotate: 0, opacity: 1 }}
                   exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.12 }}
                 >
-                  <Menu className="w-5 h-5 text-slate-300" />
+                  <Menu className="w-5 h-5" />
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.button>
+          </button>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id="mobile-nav-menu"
             variants={menuVariants}
             initial="closed"
             animate="open"
             exit="closed"
-            className="md:hidden bg-slate-950/95 backdrop-blur-2xl border-b border-white/[0.06] overflow-hidden"
+            className="md:hidden bg-white/98 backdrop-blur-xl border-b border-black/8 shadow-lg overflow-hidden"
           >
-            <div className="container max-w-6xl mx-auto px-4 py-4 flex flex-col gap-1">
+            <div className="container max-w-6xl mx-auto px-4 py-3 flex flex-col gap-1">
               {navItems.map((item) => {
                 const isActive = activeSection === item.href.replace('#', '');
                 return (
-                  <motion.button
-                    key={item.label}
-                    variants={menuItemVariants}
-                    onClick={() => handleNavClick(item.href)}
-                    whileTap={{ scale: 0.97 }}
-                    className={`text-left font-medium transition-colors py-3 px-4 rounded-xl ${
-                      isActive
-                        ? 'text-white bg-white/[0.08]'
-                        : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
-                    }`}
-                  >
-                    {item.label}
-                  </motion.button>
+                  <motion.div key={item.label} variants={menuItemVariants}>
+                    <a
+                      href={item.href}
+                      onClick={handleMobileClick}
+                      className={`block font-medium transition-colors py-3 px-4 rounded-xl text-base ${
+                        isActive
+                          ? 'text-indigo-600 bg-indigo-500/10 font-semibold'
+                          : 'text-slate-700 hover:text-slate-950 active:bg-slate-900/5'
+                      }`}
+                    >
+                      {item.label}
+                    </a>
+                  </motion.div>
                 );
               })}
+
+              {/* Mobile Hire Me CTA */}
+              <motion.div variants={menuItemVariants}>
+                <a
+                  href="#contact"
+                  onClick={handleMobileClick}
+                  className="mt-2 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-linear-to-r from-indigo-500 via-purple-500 to-indigo-500 text-white font-semibold shadow-md shadow-indigo-500/20 text-base active:scale-98 transition-transform"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Hire Me
+                </a>
+              </motion.div>
             </div>
           </motion.div>
         )}

@@ -1,12 +1,14 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform, useInView } from 'framer-motion';
 import { GlassmorphicCard } from './GlassmorphicCard';
+import { useRef, useState, useEffect } from 'react';
+import { useIsMobile } from '@/hooks/useMobile';
 
 /**
- * Design System: Liquid Glass Futurism
- * Skills Section — Dark with neon-glow pills
+ * Design System: iOS Liquid Glass
+ * Skills Section — Light theme with iOS frosted pills
  * - Category cards with gradient left-border accent
- * - Skill pills illuminate with matching category color on hover
- * - Staggered reveal with alternating slide direction
+ * - Skill pills with hover illumination
+ * - 60fps mobile performance with instant responsiveness
  */
 
 interface SkillCategory {
@@ -19,54 +21,83 @@ interface SkillCategory {
   pillHoverShadow: string;
 }
 
+function AnimatedSkillCount({ count }: { count: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const [displayCount, setDisplayCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    let current = 0;
+    const step = () => {
+      current++;
+      setDisplayCount(current);
+      if (current < count) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [isInView, count]);
+
+  return <span ref={ref}>{displayCount} skills</span>;
+}
+
 export function Skills() {
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const disableParallax = prefersReducedMotion || isMobile;
+
+  // Section-level parallax (desktop only)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], [30, -30]);
 
   const skillCategories: SkillCategory[] = [
     {
       title: 'Frontend & Mobile',
       skills: ['React', 'React Native', 'Next.js', 'Angular', 'Flutter', 'TypeScript', 'Tailwind CSS'],
-      gradient: 'from-cyan-400 to-blue-500',
+      gradient: 'from-cyan-500 to-blue-600',
       glowColor: 'cyan',
-      pillHoverBg: 'rgba(34, 211, 238, 0.12)',
-      pillHoverText: 'rgb(34, 211, 238)',
-      pillHoverShadow: '0 0 20px rgba(34, 211, 238, 0.2)',
+      pillHoverBg: 'rgba(6, 182, 212, 0.12)',
+      pillHoverText: '#0891b2',
+      pillHoverShadow: '0 4px 14px rgba(6, 182, 212, 0.18)',
     },
     {
       title: 'Backend',
       skills: ['Node.js', 'Golang', 'Java (Springboot)', 'Python', 'PHP', 'Express', 'NestJS'],
-      gradient: 'from-purple-400 to-indigo-500',
+      gradient: 'from-purple-500 to-indigo-600',
       glowColor: 'purple',
-      pillHoverBg: 'rgba(192, 132, 252, 0.12)',
-      pillHoverText: 'rgb(192, 132, 252)',
-      pillHoverShadow: '0 0 20px rgba(192, 132, 252, 0.2)',
+      pillHoverBg: 'rgba(168, 85, 247, 0.12)',
+      pillHoverText: '#9333ea',
+      pillHoverShadow: '0 4px 14px rgba(168, 85, 247, 0.18)',
     },
     {
       title: 'Databases',
       skills: ['MongoDB', 'MySQL', 'PostgreSQL', 'Redis', 'Firebase', 'Supabase'],
-      gradient: 'from-pink-400 to-purple-500',
+      gradient: 'from-pink-500 to-purple-600',
       glowColor: 'pink',
-      pillHoverBg: 'rgba(244, 114, 182, 0.12)',
-      pillHoverText: 'rgb(244, 114, 182)',
-      pillHoverShadow: '0 0 20px rgba(244, 114, 182, 0.2)',
+      pillHoverBg: 'rgba(236, 72, 153, 0.12)',
+      pillHoverText: '#db2777',
+      pillHoverShadow: '0 4px 14px rgba(236, 72, 153, 0.18)',
     },
     {
       title: 'Cloud & DevOps',
       skills: ['AWS', 'Google Cloud', 'Docker', 'Kubernetes', 'CI/CD', 'Git'],
-      gradient: 'from-amber-400 to-orange-500',
+      gradient: 'from-amber-500 to-orange-600',
       glowColor: 'amber',
-      pillHoverBg: 'rgba(251, 191, 36, 0.12)',
-      pillHoverText: 'rgb(251, 191, 36)',
-      pillHoverShadow: '0 0 20px rgba(251, 191, 36, 0.2)',
+      pillHoverBg: 'rgba(245, 158, 11, 0.12)',
+      pillHoverText: '#d97706',
+      pillHoverShadow: '0 4px 14px rgba(245, 158, 11, 0.18)',
     },
   ];
 
   const sectionVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 40 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: isMobile ? 0.4 : 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
   };
 
@@ -75,48 +106,32 @@ export function Skills() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: prefersReducedMotion ? 0 : 0.1,
+        staggerChildren: isMobile ? 0.08 : 0.12,
         delayChildren: 0.1,
       },
     },
   };
 
   const cardVariants = {
-    hidden: (i: number) => ({
-      opacity: 0,
-      x: prefersReducedMotion ? 0 : (i % 2 === 0 ? -30 : 30),
-      y: prefersReducedMotion ? 0 : 20,
-    }),
+    hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
-      x: 0,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
+      transition: { duration: isMobile ? 0.4 : 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
   };
 
-  const skillPillVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: (delay: number) => ({
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delay,
-        duration: 0.35,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    }),
-  };
-
   return (
-    <section className="relative py-16 md:py-20 lg:py-32 bg-slate-950/50 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 dot-grid opacity-20" />
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-indigo-600/6 rounded-full filter blur-[120px]" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-600/6 rounded-full filter blur-[120px]" />
+    <section id="skills" ref={sectionRef} className="relative py-14 md:py-20 lg:py-28 bg-slate-50 overflow-hidden transition-colors duration-300">
+      {/* Background ambient orbs */}
+      <div
+        style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
+        className="absolute top-1/3 left-0 w-72 md:w-125 h-72 md:h-125 bg-indigo-500/6 rounded-full filter blur-[60px] md:blur-[120px] pointer-events-none"
+      />
+      <div
+        style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
+        className="absolute bottom-10 right-0 w-72 md:w-md h-72 md:h-112 bg-purple-500/6 rounded-full filter blur-[60px] md:blur-[120px] pointer-events-none"
+      />
 
       <div className="container max-w-6xl mx-auto px-4 relative z-10">
         {/* Section Header */}
@@ -124,18 +139,19 @@ export function Skills() {
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          className="text-center mb-12 md:mb-16"
+          viewport={{ once: true, margin: '-40px' }}
+          className="text-center mb-10 md:mb-16"
         >
-          <p className="text-sm font-medium text-cyan-400 uppercase tracking-widest mb-4">
-            Technical Stack
+          <p className="text-xs sm:text-sm font-semibold text-indigo-600 uppercase tracking-widest mb-2 sm:mb-3">
+            Capabilities
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-            Skills &{' '}
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+            Skills &amp;{' '}
             <span className="text-gradient-static">Technologies</span>
           </h2>
-          <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto">
-            A comprehensive toolkit built through years of development across diverse projects and platforms.
+          <p className="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            A comprehensive overview of my technical toolkit honed across production projects,
+            mobile applications, and scalable backend architectures.
           </p>
         </motion.div>
 
@@ -144,42 +160,40 @@ export function Skills() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+          viewport={{ once: true, margin: '-30px' }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8"
         >
-          {skillCategories.map((category, categoryIndex) => (
-            <motion.div key={categoryIndex} custom={categoryIndex} variants={cardVariants}>
-              <GlassmorphicCard delay={0} glowColor={category.glowColor}>
-                <div className="p-5 md:p-6">
-                  {/* Category Title with gradient accent bar */}
-                  <div className="mb-5 flex items-center gap-3">
-                    <div className={`w-1 h-8 rounded-full bg-gradient-to-b ${category.gradient}`} />
-                    <span className="text-sm font-bold text-white tracking-wide">
+          {skillCategories.map((category) => (
+            <motion.div key={category.title} variants={cardVariants}>
+              <GlassmorphicCard delay={0} glowColor={category.glowColor} tilt={!isMobile}>
+                <div className="p-5 sm:p-6 md:p-8 relative">
+                  {/* Accent left line */}
+                  <div
+                    className={`absolute left-0 top-5 bottom-5 w-1 rounded-r-full bg-linear-to-b ${category.gradient}`}
+                  />
+
+                  {/* Category Title */}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div
+                      className={`w-3 h-3 rounded-full bg-linear-to-br ${category.gradient} shadow-xs`}
+                    />
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
                       {category.title}
+                    </h3>
+                    <span className="ml-auto text-xs font-medium text-slate-400 bg-slate-900/3 px-2.5 py-1 rounded-lg border border-black/4">
+                      <AnimatedSkillCount count={category.skills.length} />
                     </span>
                   </div>
 
                   {/* Skills as pills */}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 sm:gap-2.5">
                     {category.skills.map((skill, skillIndex) => (
-                      <motion.span
+                      <span
                         key={skillIndex}
-                        custom={categoryIndex * 0.08 + skillIndex * 0.04}
-                        variants={skillPillVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        whileHover={{
-                          scale: 1.08,
-                          backgroundColor: category.pillHoverBg,
-                          color: category.pillHoverText,
-                          boxShadow: category.pillHoverShadow,
-                          transition: { duration: 0.2 },
-                        }}
-                        className="px-3 py-1.5 text-sm font-medium text-slate-400 bg-white/[0.04] rounded-full border border-white/[0.06] cursor-default transition-all duration-200"
+                        className="px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white/90 rounded-xl border border-black/6 shadow-xs select-none transition-colors duration-150 hover:bg-indigo-50/60 hover:text-indigo-700 hover:border-indigo-200"
                       >
                         {skill}
-                      </motion.span>
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -193,10 +207,10 @@ export function Skills() {
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
-          className="mt-12 md:mt-16 text-center"
+          viewport={{ once: true, margin: '-30px' }}
+          className="mt-10 md:mt-16 text-center"
         >
-          <p className="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto">
+          <p className="text-slate-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
             I'm constantly learning and exploring new technologies. Always open to new challenges and opportunities to expand my skillset.
           </p>
         </motion.div>
