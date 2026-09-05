@@ -22,7 +22,7 @@ export function Contact() {
 
   // Section parallax (desktop only)
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: isMobile ? undefined : sectionRef,
     offset: ["start end", "end start"],
   });
   const bgY = useTransform(scrollYProgress, [0, 1], [30, -30]);
@@ -103,42 +103,42 @@ export function Contact() {
       icon: Linkedin,
       label: "LinkedIn",
       url: "https://www.linkedin.com/in/debjit-maiti-307269347?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-      hoverBg: "hover:bg-blue-600/[0.08]",
-      hoverBorder: "hover:border-blue-600/30",
+      hoverBg: "hover:bg-blue-50",
+      hoverBorder: "hover:border-blue-300",
       hoverText: "hover:text-blue-600",
     },
     {
       icon: Mail,
       label: "Email",
       url: "mailto:maitidebjit2@gmail.com",
-      hoverBg: "hover:bg-red-500/[0.08]",
-      hoverBorder: "hover:border-red-500/30",
+      hoverBg: "hover:bg-red-50",
+      hoverBorder: "hover:border-red-300",
       hoverText: "hover:text-red-600",
     },
     {
       icon: Instagram,
       label: "Instagram",
       url: "https://www.instagram.com/jit.kumar.207?igsh=Y2w3djNjODloZTN1",
-      hoverBg: "hover:bg-pink-500/[0.08]",
-      hoverBorder: "hover:border-pink-500/30",
+      hoverBg: "hover:bg-pink-50",
+      hoverBorder: "hover:border-pink-300",
       hoverText: "hover:text-pink-600",
     },
     {
       icon: MessageCircle,
       label: "WhatsApp",
       url: "https://wa.me/919475603215",
-      hoverBg: "hover:bg-green-500/[0.08]",
-      hoverBorder: "hover:border-green-500/30",
-      hoverText: "hover:text-green-600",
+      hoverBg: "hover:bg-emerald-50",
+      hoverBorder: "hover:border-emerald-300",
+      hoverText: "hover:text-emerald-600",
     },
   ];
 
   const sectionVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 16 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: isMobile ? 0.4 : 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+      transition: { duration: isMobile ? 0.35 : 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
   };
 
@@ -147,19 +147,19 @@ export function Contact() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: isMobile ? 0.08 : 0.12,
-        delayChildren: 0.1,
+        staggerChildren: isMobile ? 0.06 : 0.12,
+        delayChildren: 0.05,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: isMobile ? 12 : 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: isMobile ? 0.4 : 0.6,
+        duration: isMobile ? 0.35 : 0.6,
         ease: [0.25, 0.46, 0.45, 0.94] as const,
       },
     },
@@ -167,14 +167,14 @@ export function Contact() {
 
   const inputClasses = `
     w-full px-4 sm:px-5 py-3.5 sm:py-4 pt-6
-    bg-white/90
-    border border-black/8
+    bg-white/95
+    border border-slate-200/90
     rounded-xl
     text-slate-900 text-sm sm:text-base
     placeholder:text-transparent
     shadow-xs
-    hover:border-indigo-400/30 hover:bg-white
-    focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/60
+    hover:border-indigo-400/40 hover:bg-white
+    focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/60
     focus:bg-white
     transition-all duration-200
     disabled:opacity-50
@@ -192,14 +192,18 @@ export function Contact() {
     <section id="contact" ref={sectionRef} className="relative py-14 md:py-20 lg:py-28 bg-slate-100/50 overflow-hidden transition-colors duration-300">
       {/* Background */}
       <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
-      <div
-        style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
-        className="absolute top-0 left-0 w-72 md:w-125 h-72 md:h-125 bg-cyan-500/8 rounded-full filter blur-[60px] md:blur-[120px] pointer-events-none"
-      />
-      <div
-        style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
-        className="absolute bottom-0 right-0 w-72 md:w-125 h-72 md:h-125 bg-purple-500/8 rounded-full filter blur-[60px] md:blur-[120px] pointer-events-none"
-      />
+      {!isMobile && (
+        <>
+          <div
+            style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
+            className="absolute top-0 left-0 w-96 h-96 bg-cyan-500/8 rounded-full filter blur-[90px] pointer-events-none"
+          />
+          <div
+            style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
+            className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/8 rounded-full filter blur-[90px] pointer-events-none"
+          />
+        </>
+      )}
 
       <div className="container max-w-6xl mx-auto px-4 relative z-10">
         {/* Section Header */}

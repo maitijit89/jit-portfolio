@@ -125,6 +125,25 @@ export default function Home() {
             </button>
           </div>
 
+          {/* Navigation Links in Footer */}
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm font-medium text-slate-600 mb-6 sm:mb-8">
+            <a href="/articles" className="hover:text-indigo-600 transition-colors">
+              Engineering Articles
+            </a>
+            <span className="text-slate-300">•</span>
+            <a href="/privacy" className="hover:text-indigo-600 transition-colors">
+              Privacy Policy
+            </a>
+            <span className="text-slate-300">•</span>
+            <a href="/terms" className="hover:text-indigo-600 transition-colors">
+              Terms of Service
+            </a>
+            <span className="text-slate-300">•</span>
+            <a href="#contact" className="hover:text-indigo-600 transition-colors">
+              Contact
+            </a>
+          </div>
+
           {/* Gradient divider */}
           <div className="w-full h-px bg-linear-to-r from-transparent via-indigo-500/20 to-transparent mb-6 sm:mb-8" />
 
@@ -133,7 +152,7 @@ export default function Home() {
             <p className="text-slate-400 text-xs sm:text-sm">
               © {new Date().getFullYear()} Jit Maiti. Crafted with{' '}
               <span className="inline-block text-red-500">❤️</span>{' '}
-              & precision.
+              &amp; precision.
             </p>
           </div>
         </div>

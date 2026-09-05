@@ -121,16 +121,16 @@ export function GlassmorphicCard({
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 24 }}
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : isMobile ? 14 : 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{
-        duration: 0.6,
-        delay,
+        duration: isMobile ? 0.35 : 0.6,
+        delay: isMobile ? 0 : delay,
         ease: [0.25, 0.46, 0.45, 0.94] as const,
       }}
-      viewport={{ once: true, margin: '-30px' }}
+      viewport={{ once: true, margin: isMobile ? '20px' : '-30px' }}
       whileHover={
-        hover && !enableTilt
+        hover && !enableTilt && !isMobile
           ? {
               y: prefersReducedMotion ? 0 : -6,
               boxShadow: `0 20px 42px -10px ${glow}, 0 0 0 1px rgba(255, 255, 255, 0.95) inset, 0 4px 12px 0 rgba(0, 0, 0, 0.04)`,
@@ -138,33 +138,33 @@ export function GlassmorphicCard({
             }
           : {}
       }
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={enableTilt ? handleMouseMove : undefined}
+      onMouseEnter={enableTilt ? handleMouseEnter : undefined}
+      onMouseLeave={enableTilt ? handleMouseLeave : undefined}
       style={tiltTransform}
       className={`
-        relative overflow-hidden card-shine
-        bg-white/75
-        backdrop-blur-2xl backdrop-saturate-180
-        border border-white/80
+        relative overflow-hidden
+        ${!isMobile ? 'card-shine backdrop-blur-2xl backdrop-saturate-180 bg-white/75 border-white/80 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06),inset_0_1px_1.5px_0_rgba(255,255,255,0.95)]' : 'bg-white/97 border-slate-200/90 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05),0_1px_3px_0_rgba(0,0,0,0.02)]'}
+        border
         rounded-2xl
-        shadow-[0_12px_32px_-8px_rgba(0,0,0,0.06),inset_0_1px_1.5px_0_rgba(255,255,255,0.95)]
         transition-all duration-300
-        ${hoverBorder}
+        ${!isMobile ? hoverBorder : ''}
         ${className}
       `}
     >
-      {/* iOS Liquid Specular Top Rim — moves with cursor when tilt is enabled */}
-      <div
-        className="absolute inset-x-0 top-0 h-px pointer-events-none z-10"
-        style={{
-          background: enableTilt && isHovered
-            ? `linear-gradient(90deg, transparent ${Math.max(0, tiltState.glareX - 30)}%, rgba(255,255,255,0.95) ${tiltState.glareX}%, transparent ${Math.min(100, tiltState.glareX + 30)}%)`
-            : 'linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent)',
-        }}
-      />
+      {/* iOS Liquid Specular Top Rim — desktop only */}
+      {!isMobile && (
+        <div
+          className="absolute inset-x-0 top-0 h-px pointer-events-none z-10"
+          style={{
+            background: enableTilt && isHovered
+              ? `linear-gradient(90deg, transparent ${Math.max(0, tiltState.glareX - 30)}%, rgba(255,255,255,0.95) ${tiltState.glareX}%, transparent ${Math.min(100, tiltState.glareX + 30)}%)`
+              : 'linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent)',
+          }}
+        />
+      )}
 
-      {/* Dynamic glare overlay for tilt */}
+      {/* Dynamic glare overlay for tilt — desktop only */}
       {enableTilt && (
         <div
           className="absolute inset-0 pointer-events-none z-5 rounded-2xl"
@@ -176,7 +176,7 @@ export function GlassmorphicCard({
         />
       )}
 
-      {/* Dynamic glow shadow overlay for tilt mode */}
+      {/* Dynamic glow shadow overlay for tilt mode — desktop only */}
       {enableTilt && dynamicGlow && (
         <div
           className="absolute inset-0 rounded-2xl pointer-events-none -z-10"

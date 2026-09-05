@@ -48,7 +48,7 @@ export function Skills() {
 
   // Section-level parallax (desktop only)
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: isMobile ? undefined : sectionRef,
     offset: ['start end', 'end start'],
   });
   const bgY = useTransform(scrollYProgress, [0, 1], [30, -30]);
@@ -93,11 +93,11 @@ export function Skills() {
   ];
 
   const sectionVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 16 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: isMobile ? 0.4 : 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+      transition: { duration: isMobile ? 0.35 : 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
   };
 
@@ -106,32 +106,36 @@ export function Skills() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: isMobile ? 0.08 : 0.12,
-        delayChildren: 0.1,
+        staggerChildren: isMobile ? 0.06 : 0.12,
+        delayChildren: 0.05,
       },
     },
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 24 },
+    hidden: { opacity: 0, y: isMobile ? 12 : 24 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: isMobile ? 0.4 : 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+      transition: { duration: isMobile ? 0.35 : 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
     },
   };
 
   return (
     <section id="skills" ref={sectionRef} className="relative py-14 md:py-20 lg:py-28 bg-slate-50 overflow-hidden transition-colors duration-300">
-      {/* Background ambient orbs */}
-      <div
-        style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
-        className="absolute top-1/3 left-0 w-72 md:w-125 h-72 md:h-125 bg-indigo-500/6 rounded-full filter blur-[60px] md:blur-[120px] pointer-events-none"
-      />
-      <div
-        style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
-        className="absolute bottom-10 right-0 w-72 md:w-md h-72 md:h-112 bg-purple-500/6 rounded-full filter blur-[60px] md:blur-[120px] pointer-events-none"
-      />
+      {/* Background ambient orbs (desktop only) */}
+      {!isMobile && (
+        <>
+          <div
+            style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
+            className="absolute top-1/3 left-0 w-96 h-96 bg-indigo-500/6 rounded-full filter blur-[90px] pointer-events-none"
+          />
+          <div
+            style={disableParallax ? undefined : { transform: `translateY(${bgY}px)` }}
+            className="absolute bottom-10 right-0 w-96 h-96 bg-purple-500/6 rounded-full filter blur-[90px] pointer-events-none"
+          />
+        </>
+      )}
 
       <div className="container max-w-6xl mx-auto px-4 relative z-10">
         {/* Section Header */}

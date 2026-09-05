@@ -643,49 +643,56 @@
 
   /* ═══════════════════════════
      MOBILE PERFORMANCE
-     Reduce heavy GPU ops on small screens
+     Eliminate GPU bottlenecks on phones (60-120fps smooth scrolling)
      ═══════════════════════════ */
   @media (max-width: 767px) {
-    /* Reduce backdrop-blur — biggest mobile GPU killer */
-    .backdrop-blur-2xl {
-      --tw-backdrop-blur: blur(12px) !important;
-    }
-    .backdrop-blur-xl {
-      --tw-backdrop-blur: blur(8px) !important;
-    }
-    .backdrop-blur-md {
-      --tw-backdrop-blur: blur(6px) !important;
+    /* Offscreen section rendering optimization */
+    section[id]:not(#hero) {
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 750px;
     }
 
-    /* Reduce massive blur on background orbs */
-    .filter.blur-\[100px\] {
-      filter: blur(60px) !important;
-    }
-    .filter.blur-\[120px\] {
-      filter: blur(70px) !important;
-    }
-
-    /* GPU layer hints for animated elements */
+    /* Disable heavy multi-pass Gaussian backdrop-filters on mobile cards */
     .card-shine,
+    .ios-glass,
     .ios-glass-card,
-    .magnetic-btn {
-      will-change: transform;
-      transform: translateZ(0);
+    .glass-light {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background-color: rgba(255, 255, 255, 0.97) !important;
+      border-color: rgba(226, 232, 240, 0.9) !important;
+      box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.02) !important;
     }
 
-    /* Disable card-shine sweep on mobile (hover doesn't exist on touch) */
+    /* Force disable card-shine pseudo sweep on touch */
     .card-shine::after {
-      display: none;
+      display: none !important;
     }
 
-    /* Simplify box-shadows */
-    .shadow-lg {
-      --tw-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1) !important;
+    /* Disable heavy filter blurs on mobile background blobs */
+    [class*="blur-[60px]"],
+    [class*="blur-[70px]"],
+    [class*="blur-[100px]"],
+    [class*="blur-[120px]"] {
+      filter: blur(24px) !important;
+      opacity: 0.3 !important;
     }
 
-    /* Reduce dot-grid density */
+    /* Keep touch scrolling 100% native and hardware-accelerated */
+    html, body {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: none;
+    }
+
+    /* Simplify dot-grid pattern on mobile */
     .dot-grid {
-      background-size: 48px 48px !important;
+      background-size: 40px 40px !important;
+      opacity: 0.12 !important;
+    }
+
+    /* Smooth touch tap feedback */
+    a, button {
+      -webkit-tap-highlight-color: transparent;
     }
   }
 }

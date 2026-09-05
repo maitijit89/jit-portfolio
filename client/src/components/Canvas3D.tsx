@@ -39,8 +39,8 @@ interface LanguageDef {
 }
 
 const LANGUAGES: LanguageDef[] = [
-  { name: 'React', icon: '⚛', color: '#61DAFB', lightColor: '#0284C7', x: -4.0, y: 2.0, z: 0, scale: 0.9, speed: 0.6, scrollFactor: 1.4 },
-  { name: 'JavaScript', icon: 'JS', color: '#F7DF1E', lightColor: '#B45309', x: 4.0, y: 1.3, z: -0.5, scale: 0.85, speed: 0.5, scrollFactor: 1.2 },
+  { name: 'React', icon: '⚛', color: '#61DAFB', lightColor: '#0284C7', x: -3.8, y: 1.1, z: 0, scale: 0.88, speed: 0.6, scrollFactor: 1.4 },
+  { name: 'JavaScript', icon: 'JS', color: '#F7DF1E', lightColor: '#B45309', x: 3.8, y: 1.1, z: -0.5, scale: 0.85, speed: 0.5, scrollFactor: 1.2 },
   { name: 'C++', icon: 'C++', color: '#00599C', lightColor: '#00599C', x: -4.2, y: -0.4, z: -1, scale: 0.8, speed: 0.7, scrollFactor: 1.7 },
   { name: 'MongoDB', icon: '🍃', color: '#47A248', lightColor: '#15803D', x: 4.2, y: -0.1, z: -0.8, scale: 0.85, speed: 0.4, scrollFactor: 1.1 },
   { name: 'TypeScript', icon: 'TS', color: '#3178C6', lightColor: '#1D4ED8', x: 3.9, y: -1.6, z: -1.2, scale: 0.85, speed: 0.6, scrollFactor: 1.5 },

@@ -119,23 +119,20 @@ export function Hero() {
         }}
       />
 
-      {/* ── Ambient background orbs (Static on mobile, animated on desktop) ── */}
-      <div className="absolute inset-0 z-2 pointer-events-none overflow-hidden">
-        <div
-          className={`absolute top-[8%] right-[8%] w-72 md:w-100 h-72 md:h-100 bg-indigo-500/15 rounded-full filter blur-[60px] md:blur-[100px] ${
-            !isMobile && !prefersReducedMotion ? 'animate-blob' : ''
-          }`}
-        />
-        <div
-          className={`absolute bottom-[10%] left-[5%] w-72 md:w-100 h-72 md:h-100 bg-cyan-400/15 rounded-full filter blur-[60px] md:blur-[100px] ${
-            !isMobile && !prefersReducedMotion ? 'animate-blob animation-delay-2000' : ''
-          }`}
-        />
-        <div
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 md:w-125 h-80 md:h-125 bg-purple-500/10 rounded-full filter blur-[70px] md:blur-[120px] ${
-            !isMobile && !prefersReducedMotion ? 'animate-blob animation-delay-4000' : ''
-          }`}
-        />
+      {/* ── Ambient background orbs (desktop animated, mobile lightweight) ── */}
+      <div className="absolute inset-0 z-1 pointer-events-none overflow-hidden">
+        {!isMobile ? (
+          <>
+            <div className="absolute top-[8%] right-[8%] w-100 h-100 bg-indigo-500/12 rounded-full filter blur-[90px] animate-blob" />
+            <div className="absolute bottom-[10%] left-[5%] w-100 h-100 bg-cyan-400/12 rounded-full filter blur-[90px] animate-blob animation-delay-2000" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-md h-md bg-purple-500/8 rounded-full filter blur-[100px] animate-blob animation-delay-4000" />
+          </>
+        ) : (
+          <>
+            <div className="absolute -top-12 -right-12 w-64 h-64 bg-indigo-500/6 rounded-full blur-xl" />
+            <div className="absolute top-1/2 -left-12 w-64 h-64 bg-cyan-400/6 rounded-full blur-xl" />
+          </>
+        )}
       </div>
 
       {/* ── Content ── */}
@@ -152,10 +149,10 @@ export function Hero() {
           >
             {/* Status Badge */}
             <motion.div variants={itemVariants}>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-black/6 shadow-xs">
-                <span className="relative flex h-2.5 w-2.5">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-slate-200/90 shadow-xs">
+                <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
                 <span className="text-xs font-semibold text-slate-700 tracking-wide">Available for work</span>
               </div>
@@ -163,11 +160,11 @@ export function Hero() {
 
             {/* Main Heading */}
             <motion.div variants={itemVariants} className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.1] tracking-tight text-slate-900">
-                <span className="text-gradient">Hi, I'm Jit Maiti</span>
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.08] tracking-tight text-slate-900">
+                <span className="bg-linear-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">Hi, I'm Jit Maiti</span>
               </h1>
               <div className="flex justify-center pt-2">
-                <div className="h-1 w-24 rounded-full bg-linear-to-r from-indigo-500 via-purple-500 to-cyan-500 opacity-70" />
+                <div className="h-1 w-20 rounded-full bg-linear-to-r from-indigo-500 via-purple-500 to-cyan-500 opacity-75" />
               </div>
             </motion.div>
 
@@ -198,25 +195,25 @@ export function Hero() {
                     className="flex items-center justify-center gap-2 bg-linear-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white px-7 py-3.5 rounded-xl font-semibold text-base shadow-md shadow-indigo-500/25 active:scale-98 transition-transform"
                   >
                     <Sparkles className="w-4 h-4" />
-                    View My Work
+                    <span>View My Work</span>
                     <ArrowRight className="w-4 h-4" />
                   </a>
                   <a
                     href="#contact"
-                    className="flex items-center justify-center gap-2 bg-white border border-black/10 px-7 py-3.5 rounded-xl font-semibold text-slate-800 text-base shadow-xs active:scale-98 transition-transform"
+                    className="flex items-center justify-center gap-2 bg-white/95 border border-slate-200/90 px-7 py-3.5 rounded-xl font-semibold text-slate-800 text-base shadow-xs active:scale-98 transition-transform"
                   >
-                    <Mail className="w-4 h-4" />
-                    Get in Touch
+                    <Mail className="w-4 h-4 text-slate-600" />
+                    <span>Get in Touch</span>
                   </a>
                 </>
               ) : (
                 <>
                   <DesktopMagneticButton
                     href="#projects"
-                    className="group flex items-center justify-center gap-2 bg-linear-to-r from-indigo-500 via-purple-500 to-indigo-500 bg-size-[200%_100%] hover:bg-right text-white px-8 py-4 rounded-xl font-semibold transition-all duration-500 shadow-lg shadow-indigo-500/25 hover:shadow-[0_0_40px_rgba(99,102,241,0.35)]"
+                    className="group flex items-center justify-center gap-2 bg-linear-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-size-[200%_100%] hover:bg-right text-white px-8 py-4 rounded-xl font-semibold transition-all duration-500 shadow-lg shadow-indigo-500/25 hover:shadow-[0_0_40px_rgba(99,102,241,0.35)]"
                   >
                     <Sparkles className="w-4 h-4" />
-                    View My Work
+                    <span>View My Work</span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </DesktopMagneticButton>
 
@@ -225,7 +222,7 @@ export function Hero() {
                     className="bg-white/85 backdrop-blur-xl border border-black/8 px-8 py-4 rounded-xl font-semibold text-slate-700 hover:text-slate-950 transition-all duration-300 flex items-center justify-center gap-2 hover:bg-white shadow-xs hover:border-indigo-400/40"
                   >
                     <Mail className="w-5 h-5" />
-                    Get in Touch
+                    <span>Get in Touch</span>
                   </DesktopMagneticButton>
                 </>
               )}
