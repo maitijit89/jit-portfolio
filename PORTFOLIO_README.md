@@ -69,10 +69,10 @@ server/
 
 ### Skills Section
 - **Categorized Tech Stack:**
-  - Frontend & Mobile (React, Next.js, Angular, Flutter)
-  - Backend (Node.js, Golang, Java, Python)
-  - Databases (MongoDB, MySQL, PostgreSQL, Redis)
-  - Cloud & DevOps (AWS, Google Cloud, Docker, Kubernetes)
+  - Frontend & Mobile (React Native, Next.js, Flutter, TypeScript, Tailwind CSS)
+  - Backend (Node.js, Express)
+  - Databases (MongoDB, PostgreSQL, Redis)
+  - Cloud & DevOps (AWS, Google Cloud, Docker, Kubernetes, CI/CD, Git)
 
 ### Projects Section
 - **GitHub Integration:** Fetches repositories from GitHub API

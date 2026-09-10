@@ -39,15 +39,15 @@ interface LanguageDef {
 }
 
 const LANGUAGES: LanguageDef[] = [
-  { name: 'React', icon: '⚛', color: '#61DAFB', lightColor: '#0284C7', x: -3.8, y: 1.1, z: 0, scale: 0.88, speed: 0.6, scrollFactor: 1.4 },
+  { name: 'Next.js', icon: '▲', color: '#000000', lightColor: '#0F172A', x: -3.8, y: 1.1, z: 0, scale: 0.88, speed: 0.6, scrollFactor: 1.4 },
   { name: 'JavaScript', icon: 'JS', color: '#F7DF1E', lightColor: '#B45309', x: 3.8, y: 1.1, z: -0.5, scale: 0.85, speed: 0.5, scrollFactor: 1.2 },
   { name: 'C++', icon: 'C++', color: '#00599C', lightColor: '#00599C', x: -4.2, y: -0.4, z: -1, scale: 0.8, speed: 0.7, scrollFactor: 1.7 },
   { name: 'MongoDB', icon: '🍃', color: '#47A248', lightColor: '#15803D', x: 4.2, y: -0.1, z: -0.8, scale: 0.85, speed: 0.4, scrollFactor: 1.1 },
   { name: 'TypeScript', icon: 'TS', color: '#3178C6', lightColor: '#1D4ED8', x: 3.9, y: -1.6, z: -1.2, scale: 0.85, speed: 0.6, scrollFactor: 1.5 },
   { name: 'Node.js', icon: '⬢', color: '#339933', lightColor: '#166534', x: -3.9, y: -1.9, z: -1.5, scale: 0.8, speed: 0.5, scrollFactor: 1.3 },
   { name: 'Flutter', icon: 'Flutter', color: '#02569B', lightColor: '#02569B', x: 0.0, y: -3.2, z: -1.8, scale: 0.8, speed: 0.5, scrollFactor: 1.6 },
-  { name: 'Golang', icon: 'Go', color: '#00ADD8', lightColor: '#0284C7', x: -4.3, y: -4.2, z: -2, scale: 0.75, speed: 0.4, scrollFactor: 1.2 },
-  { name: 'Python', icon: '🐍', color: '#3776AB', lightColor: '#0369A1', x: 4.3, y: -4.6, z: -2.5, scale: 0.75, speed: 0.5, scrollFactor: 1.4 },
+  { name: 'Docker', icon: '🐳', color: '#2496ED', lightColor: '#0284C7', x: -4.3, y: -4.2, z: -2, scale: 0.75, speed: 0.4, scrollFactor: 1.2 },
+  { name: 'PostgreSQL', icon: '🐘', color: '#336791', lightColor: '#1D4ED8', x: 4.3, y: -4.6, z: -2.5, scale: 0.75, speed: 0.5, scrollFactor: 1.4 },
 ];
 
 /* ═══════════════════════════

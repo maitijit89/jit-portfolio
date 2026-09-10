@@ -56,7 +56,7 @@ export function Skills() {
   const skillCategories: SkillCategory[] = [
     {
       title: 'Frontend & Mobile',
-      skills: ['React', 'React Native', 'Next.js', 'Angular', 'Flutter', 'TypeScript', 'Tailwind CSS'],
+      skills: ['React Native', 'Next.js', 'Flutter', 'TypeScript', 'Tailwind CSS'],
       gradient: 'from-cyan-500 to-blue-600',
       glowColor: 'cyan',
       pillHoverBg: 'rgba(6, 182, 212, 0.12)',
@@ -65,7 +65,7 @@ export function Skills() {
     },
     {
       title: 'Backend',
-      skills: ['Node.js', 'Golang', 'Java (Springboot)', 'Python', 'PHP', 'Express', 'NestJS'],
+      skills: ['Node.js', 'Express'],
       gradient: 'from-purple-500 to-indigo-600',
       glowColor: 'purple',
       pillHoverBg: 'rgba(168, 85, 247, 0.12)',
@@ -74,7 +74,7 @@ export function Skills() {
     },
     {
       title: 'Databases',
-      skills: ['MongoDB', 'MySQL', 'PostgreSQL', 'Redis', 'Firebase', 'Supabase'],
+      skills: ['MongoDB', 'PostgreSQL', 'Redis'],
       gradient: 'from-pink-500 to-purple-600',
       glowColor: 'pink',
       pillHoverBg: 'rgba(236, 72, 153, 0.12)',
@@ -169,8 +169,8 @@ export function Skills() {
         >
           {skillCategories.map((category) => (
             <motion.div key={category.title} variants={cardVariants}>
-              <GlassmorphicCard delay={0} glowColor={category.glowColor} tilt={!isMobile}>
-                <div className="p-5 sm:p-6 md:p-8 relative">
+              <GlassmorphicCard delay={0} glowColor={category.glowColor} tilt={!isMobile} className="h-full">
+                <div className="p-5 sm:p-6 md:p-8 relative flex flex-col h-full">
                   {/* Accent left line */}
                   <div
                     className={`absolute left-0 top-5 bottom-5 w-1 rounded-r-full bg-linear-to-b ${category.gradient}`}
@@ -190,7 +190,7 @@ export function Skills() {
                   </div>
 
                   {/* Skills as pills */}
-                  <div className="flex flex-wrap gap-2 sm:gap-2.5">
+                  <div className="flex flex-wrap gap-2 sm:gap-2.5 mt-auto">
                     {category.skills.map((skill, skillIndex) => (
                       <span
                         key={skillIndex}

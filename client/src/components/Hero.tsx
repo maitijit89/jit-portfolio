@@ -159,11 +159,13 @@ export function Hero() {
             </motion.div>
 
             {/* Main Heading */}
-            <motion.div variants={itemVariants} className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.08] tracking-tight text-slate-900">
+            <motion.div variants={itemVariants} className="space-y-2 relative">
+              {/* Animated glow behind heading */}
+              <div className="absolute -inset-x-8 -inset-y-4 bg-linear-to-r from-indigo-500/15 via-purple-500/10 to-cyan-500/15 rounded-3xl blur-2xl animate-hero-glow pointer-events-none" />
+              <h1 className="relative text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.08] tracking-tight text-slate-900">
                 <span className="bg-linear-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">Hi, I'm Jit Maiti</span>
               </h1>
-              <div className="flex justify-center pt-2">
+              <div className="relative flex justify-center pt-2">
                 <div className="h-1 w-20 rounded-full bg-linear-to-r from-indigo-500 via-purple-500 to-cyan-500 opacity-75" />
               </div>
             </motion.div>
@@ -171,11 +173,17 @@ export function Hero() {
             {/* Subtitle */}
             <motion.div
               variants={itemVariants}
-              className="text-base sm:text-xl lg:text-2xl text-slate-700 font-medium px-2"
+              className="text-base sm:text-xl lg:text-2xl text-slate-700 font-medium px-2 min-h-[2em]"
             >
               <TypingEffect
-                text="Full-Stack Developer crafting beautiful digital experiences"
-                speed={30}
+                text={[
+                  'Full-Stack Developer crafting digital experiences',
+                  'Mobile Engineer building cross-platform apps',
+                  'Backend Architect designing scalable systems',
+                ]}
+                speed={40}
+                deleteSpeed={25}
+                pauseDuration={2500}
               />
             </motion.div>
 
@@ -233,11 +241,11 @@ export function Hero() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-10 pointer-events-none">
-        <div className="w-5 h-9 border-2 border-slate-400/40 rounded-full flex justify-center">
+        <div className="w-6 h-10 border-2 border-slate-400/40 rounded-full flex justify-center">
           <motion.div
-            animate={{ y: [0, 6, 0], opacity: [0.4, 1, 0.4] }}
+            animate={{ y: [0, 8, 0], opacity: [0.3, 1, 0.3] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-1 h-2 bg-indigo-500 rounded-full mt-1.5"
+            className="w-1.5 h-2.5 bg-linear-to-b from-indigo-500 to-purple-500 rounded-full mt-2"
           />
         </div>
       </div>

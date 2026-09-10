@@ -80,6 +80,8 @@ export default function Home() {
       <footer className="relative bg-white/80 backdrop-blur-xl border-t border-black/6 pt-14 pb-10 transition-colors duration-300">
         {/* Gradient glow at top */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 md:w-1/2 h-px bg-linear-to-r from-transparent via-indigo-500/40 to-transparent" />
+        {/* Secondary glow pulse */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-0.5 bg-linear-to-r from-transparent via-purple-500/20 to-transparent blur-sm animate-divider-glow" />
 
         <div className="container max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 mb-8 md:mb-10">
@@ -106,7 +108,7 @@ export default function Home() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2.5 sm:p-3 rounded-xl bg-slate-900/4 border border-black/6 active:scale-95 hover:bg-slate-900/8 hover:border-indigo-400/40 shadow-2xs transition-all duration-200 group"
+                    className="p-2.5 sm:p-3 rounded-xl bg-slate-900/4 border border-black/6 active:scale-95 hover:bg-slate-900/8 hover:border-indigo-400/40 shadow-2xs transition-all duration-200 group hover-lift"
                     aria-label={social.label}
                   >
                     <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-slate-600 group-hover:text-indigo-600 transition-colors" />
@@ -118,7 +120,7 @@ export default function Home() {
             {/* Back to top */}
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl bg-slate-900/4 border border-black/6 active:scale-95 hover:bg-slate-900/8 hover:border-indigo-400/40 shadow-2xs transition-all duration-200 text-xs sm:text-sm font-semibold text-slate-700 hover:text-indigo-600 cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl bg-slate-900/4 border border-black/6 active:scale-95 hover:bg-slate-900/8 hover:border-indigo-400/40 shadow-2xs transition-all duration-200 text-xs sm:text-sm font-semibold text-slate-700 hover:text-indigo-600 cursor-pointer hover-lift"
             >
               <ArrowUp className="w-4 h-4" />
               Back to top
@@ -127,19 +129,19 @@ export default function Home() {
 
           {/* Navigation Links in Footer */}
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm font-medium text-slate-600 mb-6 sm:mb-8">
-            <a href="/articles" className="hover:text-indigo-600 transition-colors">
+            <a href="/articles" className="gradient-underline-nav hover:text-indigo-600 transition-colors">
               Engineering Articles
             </a>
             <span className="text-slate-300">•</span>
-            <a href="/privacy" className="hover:text-indigo-600 transition-colors">
+            <a href="/privacy" className="gradient-underline-nav hover:text-indigo-600 transition-colors">
               Privacy Policy
             </a>
             <span className="text-slate-300">•</span>
-            <a href="/terms" className="hover:text-indigo-600 transition-colors">
+            <a href="/terms" className="gradient-underline-nav hover:text-indigo-600 transition-colors">
               Terms of Service
             </a>
             <span className="text-slate-300">•</span>
-            <a href="#contact" className="hover:text-indigo-600 transition-colors">
+            <a href="#contact" className="gradient-underline-nav hover:text-indigo-600 transition-colors">
               Contact
             </a>
           </div>
@@ -147,13 +149,20 @@ export default function Home() {
           {/* Gradient divider */}
           <div className="w-full h-px bg-linear-to-r from-transparent via-indigo-500/20 to-transparent mb-6 sm:mb-8" />
 
-          {/* Copyright */}
-          <div className="text-center">
+          {/* Copyright + Tech Badge */}
+          <div className="flex flex-col items-center gap-3">
             <p className="text-slate-400 text-xs sm:text-sm">
               © {new Date().getFullYear()} Jit Maiti. Crafted with{' '}
               <span className="inline-block text-red-500">❤️</span>{' '}
               &amp; precision.
             </p>
+            <div className="flex items-center gap-1.5 text-2xs text-slate-400">
+              <span className="px-2 py-0.5 rounded-md bg-slate-900/3 border border-black/4">React</span>
+              <span className="text-slate-300">+</span>
+              <span className="px-2 py-0.5 rounded-md bg-slate-900/3 border border-black/4">Three.js</span>
+              <span className="text-slate-300">+</span>
+              <span className="px-2 py-0.5 rounded-md bg-slate-900/3 border border-black/4">TypeScript</span>
+            </div>
           </div>
         </div>
       </footer>

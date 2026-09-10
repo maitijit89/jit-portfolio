@@ -61,14 +61,14 @@ export function About() {
     {
       icon: Code2,
       title: 'Backend Expertise',
-      description: 'Robust architectures with Node.js, Golang, Java, Python, and PHP. Database design, API development, and cloud deployment.',
+      description: 'Robust architectures with Node.js and Express. Database design, API development, and cloud deployment.',
       glowColor: 'purple' as const,
       gradient: 'from-indigo-500 to-purple-500',
     },
     {
       icon: Zap,
       title: 'Frontend Mastery',
-      description: 'Sleek mobile and web experiences with React, React Native, Next.js, Angular, and Flutter. Responsive, performant, and delightful UIs.',
+      description: 'Sleek mobile and web experiences with React Native, Next.js, and Flutter. Responsive, performant, and delightful UIs.',
       glowColor: 'cyan' as const,
       gradient: 'from-cyan-500 to-blue-500',
     },
@@ -159,8 +159,8 @@ export function About() {
             About Me
           </p>
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-            Dual Expertise in{' '}
-            <span className="text-gradient-static">Full-Stack Development</span>
+            Crafting{' '}
+            <span className="text-gradient-static">Full-Stack & Mobile Experiences</span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
             With experience spanning startups, client projects, and personal ventures, I bring a unique blend of technical depth and creative problem-solving to every project.

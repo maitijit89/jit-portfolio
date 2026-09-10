@@ -179,15 +179,17 @@ export function Projects() {
           className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8"
         >
           {featuredProjects.map((project, index) => (
-            <motion.div key={project.title} variants={cardVariants}>
-              <GlassmorphicCard delay={0} glowColor={project.glowColor} tilt={!isMobile}>
-                <div className="relative overflow-hidden rounded-2xl h-full flex flex-col">
+            <motion.div key={project.title} variants={cardVariants} className="h-full">
+              <GlassmorphicCard delay={0} glowColor={project.glowColor} tilt={!isMobile} className="h-full">
+                <div className="relative overflow-hidden rounded-2xl h-full flex flex-col group">
                   {/* Gradient top-border accent */}
                   <div
                     className={`absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r ${project.accent}`}
                   />
 
-                  <div className="p-5 sm:p-6 md:p-8 flex flex-col flex-1">
+                  <div className="p-5 sm:p-6 md:p-8 flex flex-col flex-1 relative">
+                    {/* Hover gradient overlay */}
+                    <div className={`absolute inset-0 bg-linear-to-br ${project.accent} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none rounded-2xl`} />
                     {/* Header Row */}
                     <div className="flex items-start justify-between gap-2.5 mb-3.5">
                       <div className="flex items-center gap-2.5 flex-1 min-w-0">

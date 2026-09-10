@@ -316,6 +316,7 @@ export function Contact() {
                         rows={4}
                         className={`${inputClasses} resize-none pt-7!`}
                         placeholder="Message"
+                        maxLength={1000}
                       ></textarea>
                       <label
                         htmlFor="message"
@@ -323,6 +324,12 @@ export function Contact() {
                       >
                         Message
                       </label>
+                      {/* Character count */}
+                      <div className="flex justify-end mt-1.5">
+                        <span className={`text-2xs font-medium transition-colors ${formData.message.length > 900 ? 'text-amber-500' : formData.message.length > 0 ? 'text-slate-400' : 'text-slate-300'}`}>
+                          {formData.message.length} / 1000
+                        </span>
+                      </div>
                     </div>
 
                     {/* Submit Button */}
